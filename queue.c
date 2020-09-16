@@ -16,6 +16,8 @@ queue_t *q_new()
         printf("Error! Memory allocation failed\n");
         return q;
     }
+    q->size = NULL;
+    q->tail = NULL;
     q->head = NULL;
     return q;
 }
