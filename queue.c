@@ -16,7 +16,7 @@ queue_t *q_new()
         printf("Error! Memory allocation failed\n");
         return q;
     }
-    q->size = NULL;
+    q->size = 0;
     q->tail = NULL;
     q->head = NULL;
     return q;
@@ -27,7 +27,20 @@ void q_free(queue_t *q)
 {
     /* TODO: How about freeing the list elements and the strings? */
     /* Free queue structure */
+    if (q == NULL)
+        return;
+    l_free(q->head);
+    free(q->size);
     free(q);
+}
+
+void l_free(list_ele_t *ELE)
+{
+    if (ELE == NULL)
+        return;
+    l_free(ELE->next);
+    free(ELE->value);
+    free(ELE);
 }
 
 /*
