@@ -11,7 +11,6 @@
 queue_t *q_new()
 {
     queue_t *q = malloc(sizeof(queue_t));
-    /* TODO: What if malloc returned NULL? */
     if (!q) {
         printf("Error! Memory allocation failed\n");
         return q;
@@ -22,18 +21,6 @@ queue_t *q_new()
     return q;
 }
 
-/* Free all storage used by queue */
-void q_free(queue_t *q)
-{
-    /* TODO: How about freeing the list elements and the strings? */
-    /* Free queue structure */
-    if (q == NULL)
-        return;
-    l_free(q->head);
-    free(q->size);
-    free(q);
-}
-
 void l_free(list_ele_t *ELE)
 {
     if (ELE == NULL)
@@ -42,6 +29,18 @@ void l_free(list_ele_t *ELE)
     free(ELE->value);
     free(ELE);
 }
+
+/* Free all storage used by queue */
+void q_free(queue_t *q)
+{
+    /* TODO: How about freeing the list elements and the strings? */
+    /* Free queue structure */
+    if (q == NULL)
+        return;
+    l_free(q->head);
+    free(q);
+}
+
 
 /*
  * Attempt to insert element at head of queue.
