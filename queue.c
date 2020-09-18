@@ -21,14 +21,6 @@ queue_t *q_new()
     return q;
 }
 
-void l_free(list_ele_t *ELE)
-{
-    if (ELE == NULL)
-        return;
-    l_free(ELE->next);
-    free(ELE->value);
-    free(ELE);
-}
 
 /* Free all storage used by queue */
 void q_free(queue_t *q)
@@ -37,7 +29,12 @@ void q_free(queue_t *q)
     /* Free queue structure */
     if (q == NULL)
         return;
-    l_free(q->head);
+    while (q->head) {
+        list_ele_t *t = q->head;
+        q->head = q->head->next;
+        free(t->value);
+        free(t);
+    }
     free(q);
 }
 
