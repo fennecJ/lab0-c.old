@@ -4,6 +4,10 @@
 #include <string.h>
 #include "harness.h"
 
+#ifndef strlcpy
+#define strlcpy(dst, src, sz) snprintf((dst), (sz), "%s", (src))
+#endif
+
 /*
  * Create empty queue.
  * Return NULL if could not allocate space.
@@ -48,13 +52,23 @@ void q_free(queue_t *q)
  */
 bool q_insert_head(queue_t *q, char *s)
 {
-    list_ele_t *newh;
-    /* TODO: What should you do if the q is NULL? */
-    newh = malloc(sizeof(list_ele_t));
-    /* Don't forget to allocate space for the string and copy it */
-    /* What if either call to malloc returns NULL? */
+    list_ele_t *newh = malloc(sizeof(list_ele_t));
+    if (!q || !newh) {
+        free(newh);
+        return false;
+    }
+    newh->value = malloc(sizeof(char) * strlen(s) + 1);
+    if (!newh->value) {
+        free(newh->value);
+        free(newh);
+        return false;
+    }
+    strlcpy(newh->value, s, strlen(s) + 1);
     newh->next = q->head;
     q->head = newh;
+    if (!q->tail)
+        q->tail = newh;
+    q->size++;
     return true;
 }
 
@@ -67,10 +81,24 @@ bool q_insert_head(queue_t *q, char *s)
  */
 bool q_insert_tail(queue_t *q, char *s)
 {
-    /* TODO: You need to write the complete code for this function */
-    /* Remember: It should operate in O(1) time */
-    /* TODO: Remove the above comment when you are about to implement. */
-    return false;
+    list_ele_t *newh = malloc(sizeof(list_ele_t));
+    if (!q || !newh) {
+        free(newh);
+        return false;
+    }
+    newh->value = malloc(sizeof(char) * (strlen(s) + 1));
+    if (!newh->value) {
+        free(newh->value);
+        free(newh);
+        return false;
+    }
+    strlcpy(newh->value, s, strlen(s) + 1);
+    newh->next = NULL;
+    q->tail = newh;
+    if (!q->head)
+        q->head = newh;
+    q->size++;
+    return true;
 }
 
 /*
