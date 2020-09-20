@@ -208,9 +208,6 @@ void q_sort(queue_t *q)
     if (q->size < 2)
         return;
     q->head = split(q->head);
-    q->tail = q->head;
     while (q->tail->next)
         q->tail = q->tail->next;
-    /* TODO: You need to write the code for this function */
-    /* TODO: Remove the above comment when you are about to implement. */
 }
