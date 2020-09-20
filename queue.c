@@ -52,6 +52,7 @@ bool q_insert_head(queue_t *q, char *s)
 {
     list_ele_t *newh = malloc(sizeof(list_ele_t));
     if (!q || !newh) {
+        free(newh);
         return false;
     }
     newh->value = malloc(sizeof(char) * strlen(s) + 1);
@@ -78,8 +79,10 @@ bool q_insert_head(queue_t *q, char *s)
 bool q_insert_tail(queue_t *q, char *s)
 {
     list_ele_t *newh = malloc(sizeof(list_ele_t));
-    if (!q || !newh)
+    if (!q || !newh) {
+        free(newh);
         return false;
+    }
     newh->value = malloc(sizeof(char) * (strlen(s) + 1));
     if (!newh->value) {
         free(newh);
