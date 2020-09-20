@@ -118,8 +118,6 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
         return false;
     if (!q->head)
         return false;
-    if (q->head == q->tail)
-        q->tail = q->tail->next;
     strlcpy(sp, q->head->value, bufsize);
     list_ele_t *tmp = q->head;
     q->head = q->head->next;
