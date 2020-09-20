@@ -82,22 +82,20 @@ bool q_insert_head(queue_t *q, char *s)
 bool q_insert_tail(queue_t *q, char *s)
 {
     list_ele_t *newh = malloc(sizeof(list_ele_t));
-    if (!q || !newh) {
-        free(newh);
+    if (!q || !newh)
         return false;
-    }
     newh->value = malloc(sizeof(char) * (strlen(s) + 1));
     if (!newh->value) {
-        free(newh->value);
         free(newh);
         return false;
     }
     strlcpy(newh->value, s, strlen(s) + 1);
     newh->next = NULL;
-    q->tail->next = newh;
-    q->tail = newh;
-    if (!q->head)
+    if (q->tail)
+        q->tail->next = newh;
+    else
         q->head = newh;
+    q->tail = newh;
     q->size++;
     return true;
 }
